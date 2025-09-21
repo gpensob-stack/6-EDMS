@@ -1,0 +1,310 @@
+<html lang="es">
+<head>
+    <!-- Define el tipo de documento como HTML5 -->
+    <meta charset="UTF-8">
+    <!-- Asegura que la página se vea bien en todos los dispositivos -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="estilos.css">
+    <title>6.EDMS</title>
+    <!-- Incluye la librería Tailwind CSS para estilizar la página de forma rápida y moderna -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel ="icon"  href="https://images.vexels.com/media/users/3/144097/isolated/preview/3dedcd235214cdde6b4e171fdbf66c9d-icono-de-corazon.png">
+    <style>
+        /* Importa la fuente 'Inter' desde Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+        body {
+            /* Establece la fuente para toda la página */
+            font-family: 'Inter', sans-serif;
+            /* Aplica el color de fondo rojo vivo */
+            background-color: #FF0000;
+        }
+        /* Estilo para la columna de la portada de la canción */
+        .image-column {
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.5s ease-in-out;
+            /* Altura completa en pantallas grandes */
+            height: 100vh; 
+        }
+        /* Estilo para el contenedor principal, ahora semi-transparente */
+        .love-letter-bg {
+            /* Se ha reducido la opacidad para que el fondo se vea mejor */
+            background-color: rgba(255, 255, 255, 0.2); 
+        }
+    </style>
+</head>
+<body class="flex flex-col md:flex-row min-h-screen">
+    <!-- Modal de bienvenida -->
+    <div id="welcome-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm" style="display: flex;">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center relative">
+            <h2 class="text-2xl font-bold text-red-500 mb-4">Para ti ❤️</h2>
+            <p class="text-gray-700 mb-6">Quiero que sepas que cada canción, cada palabra y cada detalle de esta página está pensado solo para ti. Desde hace tiempo me di cuenta de lo especial que eres. No puedo evitar sentirme atraído por ti. Sin embargo, también está esa parte de cuando hablas de Alejandro. Sé que no lo haces con mala intención, pero me duele porque me hace sentir que él tiene un lugar que yo quisiera tener en tu vida. Por eso me alejé, incluso sin darte explicaciones claras. No era porque no quisiera hablar contigo, sino porque no sabía cómo decirte que lo que siento es muy fuerte y me da miedo que al decirte lo que siento se dañe nuestra relación.</p>
+            <button id="welcome-continue-btn" class="bg-red-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-red-600 transition-colors duration-300 transform hover:scale-105">Entrar</button>
+        </div>
+    </div>
+    <div class="corazones-fondo"></div>
+    <header>
+        <div class="logo">
+            <img src="https://cdn-icons-png.flaticon.com/512/174/174872.png" alt="logo de Spotify">
+        </div>
+    </header>
+
+    <!-- Columna de la izquierda para la portada de la canción -->
+    <!-- Se ha agregado flexbox para centrar el contenido vertical y horizontalmente -->
+    <div class="flex-1 flex items-center justify-center p-4">
+        <!-- Contenedor de la imagen, con tamaño fijo y bordes redondeados -->
+        <div id="image-container" class="w-96 h-96 bg-cover bg-center rounded-3xl shadow-xl transition-all duration-500 ease-in-out relative overflow-visible">
+            <div class="notas-musicales"></div>
+        </div>
+    </div>
+
+    <!-- Contenedor principal del contenido, en la columna de la derecha -->
+    <div class="md:w-1/2 flex items-center justify-center p-4">
+        <!-- Se ha reemplazado la clase bg-white por la nueva clase semi-transparente -->
+        <div id="love-letter-container" class="love-letter-bg rounded-3xl shadow-2xl p-8 max-w-lg w-full relative overflow-hidden transform transition-all duration-500 ease-in-out scale-100 opacity-100">
+
+            <!-- Contenedor para el contenido de las canciones (visible por defecto) -->
+            <div id="song-content-container">
+                <!-- Banner superior con el título -->
+                <div class="text-center mb-8">
+                    <!-- Título principal de la estación/canción -->
+                    <h1 id="station-title" class="text-3xl sm:text-4xl font-bold text-white mb-2">Estación 1: Título de la Canción</h1>
+                    <!-- Pequeña descripción de la estación -->
+                    <p id="station-info" class="text-white italic">Las canciones de nuestras 6 estaciones.</p>
+                </div>
+
+                <!-- Área principal de contenido -->
+                <div class="flex flex-col items-center">
+                    
+                    <!-- Área para el reproductor de audio -->
+                    <div class="mb-6 w-full">
+                        <!-- Elemento de audio con controles nativos -->
+                        <audio id="audio-player" class="w-full rounded-full" controls></audio>
+                    </div>
+
+                    <!-- Área de texto para los sentimientos -->
+                    <div class="w-full bg-pink-50 border border-pink-200 rounded-2xl p-6 mb-6 h-64 overflow-y-auto shadow-inner">
+                        <!-- Párrafo donde se mostrarán los sentimientos -->
+                        <p id="station-feelings" class="text-gray-700 leading-relaxed whitespace-pre-wrap">
+                            Aquí es donde vas a escribir tus sentimientos, los recuerdos que te trae esta canción y por qué la elegiste para esta estación de nuestro amor. ¡Este es tu espacio para expresar todo lo que sientes!
+                        </p>
+                    </div>
+                    
+                    <!-- Controles de navegación -->
+                    <div class="flex justify-between w-full mb-8">
+                        <!-- Botón para ir a la estación anterior -->
+                        <button id="prev-btn" class="flex-1 bg-white text-red-500 font-bold py-3 px-6 rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 transform hover:scale-105 mr-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            &larr; Anterior
+                        </button>
+                        <!-- Botón para ir a la siguiente estación -->
+                        <button id="next-btn" class="flex-1 bg-white text-red-500 font-bold py-3 px-6 rounded-full shadow-lg hover:bg-gray-200 transition-colors duration-300 transform hover:scale-105 ml-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Siguiente &rarr;
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenedor para el mensaje final (oculto por defecto) -->
+            <div id="final-message-container" class="text-center flex flex-col items-center hidden">
+                <div class="mb-8">
+                    <h1 class="text-3xl sm:text-4xl font-bold text-white mb-2">Espero que te haya gustado</h1>
+                    <p class="text-white italic">Att: Gabriel.</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a id="whatsapp-btn" href="#" target="_blank" class="bg-green-500 text-white font-bold py-3 px-6 rounded-full shadow-lg hover:bg-green-600 transition-colors duration-300 transform hover:scale-105 flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.477 2 2 6.477 2 12c0 1.996.586 3.864 1.584 5.462l-.99 3.633 3.76-1.026a9.943 9.943 0 005.646 1.365c5.523 0 10-4.477 10-10S17.523 2 12 2zm4.845 13.92c-.244.33-.518.361-1.047.33-.529-.03-1.282-.244-2.181-.664-.899-.42-1.895-.899-2.613-1.638-.718-.739-1.391-1.693-1.787-2.316-.396-.623-.198-1.201.132-1.531.33-.33.726-.396 1.056-.396.33 0 .66.132.899.264.239.132.396.264.66.529.264.264.42.594.552.899.132.305.033.66-.066.827-.099.165-.198.33-.297.462-.099.132-.198.231-.264.297-.066.066-.132.132-.099.231.033.099.132.231.297.396.165.165.297.264.396.33.099.066.198.099.297.099.099 0 .198.033.297.099.099.099.198.231.297.363.099.132.198.264.264.363.066.099.099.198.132.264.033.066.033.099.066.198.033.099.066.165.099.264.033.099.066.165.099.264.033.099.066.165.099.264.033.099.066.165.099.264.033.099.066.165.099.264.033.099.066.165.099.264.033.099.066.165.099.264z"/>
+                        </svg>
+                        Llamame 😘
+                    </a>
+                    <button id="volver-btn" class="bg-gray-200 text-red-500 font-bold py-3 px-6 rounded-full shadow-lg hover:bg-gray-300 transition-colors duration-300 transform hover:scale-105 flex items-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+                        Volver
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <script>
+        // Espera a que el documento se cargue por completo antes de ejecutar el script
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mostrar modal de bienvenida al cargar
+            const welcomeModal = document.getElementById('welcome-modal');
+            const welcomeContinueBtn = document.getElementById('welcome-continue-btn');
+            // El modal ya tiene fondo borroso, solo ocultarlo al continuar
+            welcomeContinueBtn.addEventListener('click', () => {
+                welcomeModal.style.display = 'none';
+            });
+            // Un array de objetos, donde cada objeto representa una estación de amor
+            const stations = [
+                // *** INSTRUCCIONES: Reemplaza estos datos con tus 12 canciones, URLs de las portadas y sentimientos. ***
+                {
+                    // Título de la primera estación
+                    title: "El Inicio: Qué locura enamorarme de ti",
+                    // URL de la canción. Reemplaza esta URL con tu archivo MP3
+                    songUrl: "https://archive.org/download/que-locura-enamorarme-de-ti_202509.mp3/Que%20Locura%20Enamorarme%20De%20Ti.mp3", 
+                    // URL de la imagen de fondo. Reemplaza esta URL con la portada real de la canción
+                    bgImageUrl: "data:image/jpeg;base64,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",
+                    // Texto con tus sentimientos para esta estación
+                    feelings: "Porque no llegue a esperar que fueras tan especial y que me empezaras a gustar tan rapido." 
+                },
+                {
+                    title: "Estación 2: Lluvia ",
+                    songUrl: "https://archive.org/download/lluvia_202509/Lluvia.mp3",
+                    bgImageUrl: "https://i.scdn.co/image/ab67616d0000b27398ed977a15ba445c161e91d5",
+                    feelings: "Porque cuando hablamos y sale el tema de alejandro y hablas bastante de el, me siento un poco celoso."
+                },
+                {
+                    title: "Estación 3: Cada Vez Otra Vez",
+                    songUrl: "https://archive.org/download/eddy-santiago-cada-vez-otra-vez/Eddy%20Santiago%20%20cada%20vez%20otra%20vez.mp3",
+                    bgImageUrl: "https://i.ytimg.com/vi/awy_tHRNE7I/sddefault.jpg",
+                    feelings: "Y cada vez que hablamos, aunque salga el tema de Alejandro, me vuelvo a enamorar de ti otra vez. No importa cuántas veces pase."
+                },
+                {
+                    title: "Estación 4: BAILE INoLVIDABLE",
+                    songUrl: "https://archive.org/download/bad-bunny-baile-ino-lvidable-video-oficial-de-bi-ti-rar-ma-s-foto-s_202509/BAD%20BUNNY%20-%20BAILE%20INoLVIDABLE%20%28Video%20Oficial%29%20%20DeB%C3%8D%20TiRAR%20M%C3%A1S%20FOToS.mp3",
+                    bgImageUrl: "https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411",
+                    feelings: "Porque estar contigo, aunque sea unos cuantos minutos en el unico, se siente como un baile inolvidable que quiero guardar para siempre."
+                },
+                {
+                    title: "Estación 5: Deseándote",
+                    songUrl: "https://archive.org/download/Deseandote/Deseandote.mp3",
+                    bgImageUrl: "https://i.scdn.co/image/ab67616d0000b2731090772b21a561bfa6d71f86",
+                    feelings: "Porque aunque hables de él, yo sigo aquí, con la esperanza de que algún día mi lugar en tu corazón sea más grande."
+                },
+                {
+                    title: "Estación 6: Mía",
+                    songUrl: "https://archive.org/download/mia_20250921/M%C3%ADa.mp3",
+                    bgImageUrl: "https://i.ytimg.com/vi/w2d7MwP5UHE/sddefault.jpg",
+                    feelings: "Porque aunque me sienta a veces un poco celoso, quiero que sepas que me gusta cada momento que paso contigo, me gusta todo de ti, tu sonrisa, tus malos gestos, tu forma de ser, hasta cuando miras mal y me dices que ya es costumbre y no me lo tome personal y lo que menos quiero es que te sientas incomoda conmigo, solo quiero que sepas que me gustas y haría lo que fuera por estar contigo."
+                }
+            ];
+
+            // Obtiene los elementos del DOM por su ID
+            const audioPlayer = document.getElementById('audio-player');
+            const stationTitle = document.getElementById('station-title');
+            const stationFeelings = document.getElementById('station-feelings');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const imageContainer = document.getElementById('image-container');
+            const loveLetterContainer = document.getElementById('love-letter-container');
+            const songContentContainer = document.getElementById('song-content-container');
+            const finalMessageContainer = document.getElementById('final-message-container');
+            const whatsappBtn = document.getElementById('whatsapp-btn');
+            
+            // Variable para llevar un registro de la estación actual
+            let currentStationIndex = 0;
+
+            // Define tu número de WhatsApp aquí (código de país + número sin espacios ni signos)
+            const whatsappNumber = "+57 3013543512"; // Ejemplo: para Colombia (+57)
+
+            // Función para actualizar la interfaz de usuario con los datos de la estación actual
+            const updateUI = () => {
+                const isFinalState = currentStationIndex === stations.length;
+
+                if (!isFinalState) {
+                    const currentStation = stations[currentStationIndex];
+                    
+                    songContentContainer.classList.remove('hidden');
+                    finalMessageContainer.classList.add('hidden');
+
+                    stationTitle.textContent = currentStation.title;
+                    stationFeelings.textContent = currentStation.feelings;
+                    audioPlayer.src = currentStation.songUrl;
+                    audioPlayer.load();
+                    imageContainer.style.backgroundImage = `url('${currentStation.bgImageUrl}')`;
+                    
+                    prevBtn.disabled = currentStationIndex === 0;
+
+                } else {
+                    songContentContainer.classList.add('hidden');
+                    finalMessageContainer.classList.remove('hidden');
+
+                    const whatsappMessage = encodeURIComponent("¡Hola! Me encantó la página de las canciones.");
+                    whatsappBtn.href = `https://wa.me/${+573013543512}?text=${whatsappMessage}`;
+                }
+                nextBtn.disabled = isFinalState;
+            };
+
+            // Función para animar el cambio de estación
+            const animateAndChangeStation = () => {
+                loveLetterContainer.classList.add('scale-95', 'opacity-0');
+                loveLetterContainer.classList.remove('scale-100', 'opacity-100');
+
+                setTimeout(() => {
+                    updateUI();
+                    loveLetterContainer.classList.remove('scale-95', 'opacity-0');
+                    loveLetterContainer.classList.add('scale-100', 'opacity-100');
+                }, 300);
+            };
+
+            // Agrega un "escuchador" de eventos al botón "Siguiente"
+            nextBtn.addEventListener('click', () => {
+                if (currentStationIndex <= stations.length) {
+                    currentStationIndex++;
+                    animateAndChangeStation();
+                }
+            });
+
+            // Agrega un "escuchador" de eventos al botón "Anterior"
+            prevBtn.addEventListener('click', () => {
+                if (currentStationIndex > 0) {
+                    currentStationIndex--;
+                    animateAndChangeStation();
+                }
+            });
+
+            // Botón volver en el mensaje final
+            const volverBtn = document.getElementById('volver-btn');
+            if (volverBtn) {
+                volverBtn.addEventListener('click', () => {
+                    currentStationIndex = stations.length - 1;
+                    animateAndChangeStation();
+                });
+            }
+
+            // Inicializa la primera estación al cargar la página por primera vez
+            updateUI();
+        });
+
+
+// Notas musicales animadas alrededor de la portada
+document.addEventListener('DOMContentLoaded', function() {
+    const notasCont = document.querySelector('.notas-musicales');
+    if (notasCont) {
+        const notas = ['♪', '♫', '♬', '♩'];
+        for (let i = 0; i < 10; i++) {
+            const nota = document.createElement('span');
+            nota.className = 'nota-musical';
+            nota.textContent = notas[Math.floor(Math.random() * notas.length)];
+            nota.style.left = (10 + Math.random() * 80) + '%';
+            nota.style.top = (10 + Math.random() * 80) + '%';
+            nota.style.animationDuration = (3 + Math.random() * 3) + 's';
+            nota.style.fontSize = (18 + Math.random() * 18) + 'px';
+            nota.style.opacity = 0.5 + Math.random() * 0.5;
+            notasCont.appendChild(nota);
+        }
+    }
+});
+</script>
+
+<!-- Script para corazones animados de fondo -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fondo = document.querySelector('.corazones-fondo');
+    if (fondo) {
+        for (let i = 0; i < 15; i++) {
+            const corazon = document.createElement('div');
+            corazon.className = 'corazon';
+            corazon.style.left = Math.random() * 100 + 'vw';
+            corazon.style.animationDuration = (6 + Math.random() * 4) + 's';
+            corazon.style.opacity = 0.4 + Math.random() * 0.6;
+            fondo.appendChild(corazon);
+        }
+    }
+});
+</script>
+</body>
+</html>
