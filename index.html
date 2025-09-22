@@ -1,6 +1,6 @@
 <html lang="es">
 <head>
-    <!-- Define el tipo de documento como HTML5 -->
+<!-- Define el tipo de documento como HTML5 -->
     <meta charset="UTF-8">
     <!-- Asegura que la página se vea bien en todos los dispositivos -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,12 +34,31 @@
     </style>
 </head>
 <body class="flex flex-col md:flex-row min-h-screen">
-    <!-- Modal de bienvenida -->
+    <!-- Modal de validación de nombre -->
     <div id="welcome-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm" style="display: flex;">
         <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center relative">
             <h2 class="text-2xl font-bold text-red-500 mb-4">Para ti ❤️</h2>
-            <p class="text-gray-700 mb-6">Quiero que sepas que cada canción, cada palabra y cada detalle de esta página está pensado solo para ti. Desde hace tiempo me di cuenta de lo especial que eres. No puedo evitar sentirme atraído por ti. Sin embargo, también está esa parte de cuando hablas de Alejandro. Sé que no lo haces con mala intención, pero me duele porque me hace sentir que él tiene un lugar que yo quisiera tener en tu vida. Por eso me alejé, incluso sin darte explicaciones claras. No era porque no quisiera hablar contigo, sino porque no sabía cómo decirte que lo que siento es muy fuerte y me da miedo que al decirte lo que siento se dañe nuestra relación.</p>
+            <p class="text-gray-700 mb-6">Para entrar, escribe tu nombre (debe comenzar con mayúscula)</p>
+            <input id="nombre-input" type="text" placeholder="Nombre" class="mb-4 px-4 py-2 rounded-full border-2 border-red-300 focus:outline-none focus:border-red-500 w-full text-center" autocomplete="off" />
             <button id="welcome-continue-btn" class="bg-red-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-red-600 transition-colors duration-300 transform hover:scale-105">Entrar</button>
+        </div>
+    </div>
+
+    <!-- Modal de mensaje especial -->
+    <div id="mensaje-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm" style="display: none;">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center relative">
+            <h2 class="text-2xl font-bold text-red-500 mb-4">Para ti ❤️</h2>
+            <p class="text-gray-700 mb-6">Quiero que sepas que cada canción, cada palabra y cada detalle de esta página está pensado solo para ti. Desde hace tiempo me di cuenta de lo especial que eres. No puedo evitar sentirme atraído por ti. Sin embargo, también está esa parte de cuando hablas de Alejandro. Sé que no lo haces con mala intención, pero me duele porque me hace sentir que él tiene un lugar que yo quisiera tener en tu vida. Por eso me alejé, incluso sin darte explicaciones claras. No era porque no quisiera hablar contigo, sino porque no sabía cómo decirte que lo que siento es muy fuerte y me da miedo que al decirte lo que siento se dañe nuestra relación.</p>
+            <button id="mensaje-continue-btn" class="bg-red-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-red-600 transition-colors duration-300 transform hover:scale-105">Continuar</button>
+        </div>
+    </div>
+
+    <!-- Modal de error de acceso -->
+    <div id="error-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm" style="display: none;">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center relative">
+            <h2 class="text-2xl font-bold text-red-500 mb-4">No se pudo ingresar</h2>
+            <p class="text-gray-700 mb-6">El nombre ingresado no es válido.</p>
+            <button id="retry-btn" class="bg-gray-300 text-red-500 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-400 transition-colors duration-300 transform hover:scale-105">Reintentar</button>
         </div>
     </div>
     <div class="corazones-fondo"></div>
@@ -133,9 +152,37 @@
             // Mostrar modal de bienvenida al cargar
             const welcomeModal = document.getElementById('welcome-modal');
             const welcomeContinueBtn = document.getElementById('welcome-continue-btn');
-            // El modal ya tiene fondo borroso, solo ocultarlo al continuar
+            const nombreInput = document.getElementById('nombre-input');
+            const errorModal = document.getElementById('error-modal');
+            const retryBtn = document.getElementById('retry-btn');
+
+            function validarNombre(nombre) {
+                return nombre === 'Itala' || nombre === 'Admin';
+            }
+
+            const mensajeModal = document.getElementById('mensaje-modal');
+            const mensajeContinueBtn = document.getElementById('mensaje-continue-btn');
+
             welcomeContinueBtn.addEventListener('click', () => {
-                welcomeModal.style.display = 'none';
+                const nombre = nombreInput.value.trim();
+                if (validarNombre(nombre)) {
+                    welcomeModal.style.display = 'none';
+                    mensajeModal.style.display = 'flex';
+                } else {
+                    welcomeModal.style.display = 'none';
+                    errorModal.style.display = 'flex';
+                }
+            });
+
+            mensajeContinueBtn.addEventListener('click', () => {
+                mensajeModal.style.display = 'none';
+            });
+
+            retryBtn.addEventListener('click', () => {
+                errorModal.style.display = 'none';
+                welcomeModal.style.display = 'flex';
+                nombreInput.value = '';
+                nombreInput.focus();
             });
             // Un array de objetos, donde cada objeto representa una estación de amor
             const stations = [
