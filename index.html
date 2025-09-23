@@ -1,6 +1,39 @@
 <html lang="es">
 <head>
-<!-- Define el tipo de documento como HTML5 -->
+    <!-- Firebase App (compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+        <script>
+            // Configuración de tu proyecto Firebase
+            const firebaseConfig = {
+                apiKey: "AIzaSyBsSYZBWrS3VWQeXbQKDy8ITJNC8-zjo",
+                authDomain: "edms-5976f.firebaseapp.com",
+                projectId: "edms-5976f",
+                storageBucket: "edms-5976f.appspot.com",
+                messagingSenderId: "416691218695",
+                appId: "1:416691218695:web:efddd365709df067eefd2a"
+            };
+
+            // Inicializa Firebase
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+
+            // Función para guardar el acceso
+            async function registrarAcceso(nombre) {
+                const userAgent = navigator.userAgent;
+                const id = nombre + '_' + btoa(userAgent);
+                try {
+                    await db.collection('accesos').doc(id).set({
+                        nombre,
+                        userAgent,
+                        fecha: new Date().toISOString()
+                    });
+                } catch (e) {
+                    console.error('Error guardando acceso:', e);
+                }
+            }
+        </script>
+    <!-- Define el tipo de documento como HTML5 -->
     <meta charset="UTF-8">
     <!-- Asegura que la página se vea bien en todos los dispositivos -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -166,6 +199,7 @@
             welcomeContinueBtn.addEventListener('click', () => {
                 const nombre = nombreInput.value.trim();
                 if (validarNombre(nombre)) {
+                    registrarAcceso(nombre); // Guarda el acceso en Firebase
                     welcomeModal.style.display = 'none';
                     mensajeModal.style.display = 'flex';
                 } else {
